@@ -4,18 +4,16 @@
 
 #include "CoreMinimal.h"
 #include "GiltInteractableTargetInterface.h"
-#include "GameFramework/Actor.h"
+#include "Actors/GiltWorldActor.h"
 #include "GiltWorldInteractable.generated.h"
 
 class UBoxComponent;
 UCLASS(Abstract, Blueprintable)
-class GILT_API AGiltWorldInteractable : public AActor, public IGiltInteractableTargetInterface
+class GILT_API AGiltWorldInteractable : public AGiltWorldActor, public IGiltInteractableTargetInterface
 {
 	GENERATED_BODY()
 
 public:
-
-	AGiltWorldInteractable();
 
 	virtual void GatherInteractionOptions(const FGiltInteractionQuery& InteractQuery, FInteractionOptionBuilder& OptionBuilder) override;
 
@@ -24,12 +22,6 @@ public:
 protected:
 
 	bool bIsHighlighted;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UBoxComponent* Collision;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UStaticMeshComponent* Mesh;
 	
 	UPROPERTY(EditAnywhere)
 	FGiltInteractionOption Option;

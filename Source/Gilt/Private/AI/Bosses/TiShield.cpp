@@ -4,7 +4,6 @@
 #include "AI/Bosses/TiShield.h"
 
 #include "Components/BoxComponent.h"
-#include "TraceSystem/TiTraceComponent.h"
 
 // Sets default values
 ATiShield::ATiShield()
@@ -21,6 +20,4 @@ ATiShield::ATiShield()
 
 	WeakPoint = CreateDefaultSubobject<UBoxComponent>("WeakPoint");
 	WeakPoint->SetupAttachment(RootComponent);
-
-	TraceComponent = CreateDefaultSubobject<UTiTraceComponent>("TraceComponent");
 }

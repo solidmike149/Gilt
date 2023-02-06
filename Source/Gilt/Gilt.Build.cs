@@ -17,7 +17,7 @@ public class Gilt : ModuleRules
 			"GameplayAbilities",
 			"Niagara",
 			"EnhancedInput",
-			"StructUtils"
+			"StructUtils",
 		});
 		PrivateDependencyModuleNames.AddRange(new string[] {
 			"Slate",

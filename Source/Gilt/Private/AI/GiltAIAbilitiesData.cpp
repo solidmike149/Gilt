@@ -3,7 +3,7 @@
 
 #include "AI/GiltAIAbilitiesData.h"
 
-float FPostExecutionChange::GetScore(FGameplayTag& OutAbilityTag) const
+UGiltAIAbilitiesData::UGiltAIAbilitiesData()
 {
-	return 0.0f;
+	ComboWindow = 0.5f;
 }

@@ -86,6 +86,10 @@
 		{
 			"Name": "StructUtils",
 			"Enabled": true
+		},
+		{
+			"Name": "DidItHit",
+			"Enabled": true
 		}
 	]
 }

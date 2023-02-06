@@ -6,15 +6,22 @@
 #include "AI/GiltAIAbilitiesData.h"
 
 
-// Sets default values for this component's properties
+
 UGiltAIAbilitiesComponent::UGiltAIAbilitiesComponent()
 {
 }
 
-bool UGiltAIAbilitiesComponent::EvaluateAndSelectAbility(float Distance, FGameplayTag& AbilityTag)
+void UGiltAIAbilitiesComponent::BeginPlay()
 {
-	TMap<FGameplayTag, FAbility>& Abilities = AbilitiesData->Abilities;
+	Super::BeginPlay();
 
+	Abilities = AbilitiesData->Abilities;
+
+	ComboWindow = AbilitiesData->ComboWindow;
+}
+
+bool UGiltAIAbilitiesComponent::EvaluateAndSelectAbility(float Distance, FGameplayTag& OutAbilityTag)
+{
 	TMap<FGameplayTag, FAbility> AbilitiesInThreshold;
 
 	for (TTuple<FGameplayTag, FAbility>& Element : Abilities)
@@ -32,68 +39,28 @@ bool UGiltAIAbilitiesComponent::EvaluateAndSelectAbility(float Distance, FGamepl
 		return false;
 		
 	case 1:
-		AbilityTag = AbilitiesInThreshold.Array()[0].Key;
+		OutAbilityTag = AbilitiesInThreshold.Array()[0].Key;
 		return true;
 		
 	default:
 		int32 LastIndex = AbilitiesInThreshold.Array().Num() - 1;
-		AbilityTag = AbilitiesInThreshold.Array()[FMath::RandRange(0, LastIndex)].Key;
+		OutAbilityTag = AbilitiesInThreshold.Array()[FMath::RandRange(0, LastIndex)].Key;
 		return true;
 	}
 }
 
-void UGiltAIAbilitiesComponent::NotifyAbilityExecution(FGameplayTag AbilityTag)
+void UGiltAIAbilitiesComponent::NotifyAbilityExecution(FGameplayTag AbilityTag, float Distance)
 {
-	/*FCombo ActiveCombo = AttackData[AttackIndex].ComboData;
+	TArray<FInstancedStruct> ScoreChanges = Abilities.Find(AbilityTag)->AbilityScoreChanges;
 
-	ATiAIControllerBase* AIController = Cast<ATiAIControllerBase>(GetOwner());
-
-	if(AIController)
+	for (FInstancedStruct ScoreChange : ScoreChanges)
 	{
-		if (AIController->bIsInComboCpp)
-		{
-			int32 Index = 0;
-			for (FAttack& Attack : AttackData)
-			{
-				if (Index == AttackIndex)
-				{
-					Attack.Score -= Attack.DecrementScoreExecuted;
-				}
-			
-				else if (Index == ActiveCombo.Index)
-				{
-					Attack.Score += ActiveCombo.IncrementScore;
-				}
-			
-				else
-				{
-					Attack.Score -= Attack.DecrementScoreBase;
-				}
+		FGameplayTag AbilityToModify;
+		float ModifyingScore = ScoreChange.Get<FPostExecutionChange>().GetScore(AbilityToModify, Distance);
+		Abilities.Find(AbilityToModify)->SetScore(ModifyingScore);
+	}
 
-				Attack.Score = FMath::Clamp(Attack.Score, 0.0f, 1.0f);
-				Index ++;
-			}	
-		}
-	
-		else
-		{
-			int32 Index = 0;
-		
-			for (FAttack& Attack : AttackData)
-			{
-				if (Index == AttackIndex)
-				{
-					Attack.Score -= Attack.DecrementScoreExecuted;
-				}
-			
-				else if(Index == ActiveCombo.Index)
-				{
-					Attack.Score += ActiveCombo.IncrementScore;
-				}
-			
-				Attack.Score = FMath::Clamp(Attack.Score, 0.0f, 1.0f);
-				Index ++;
-			}
-		}	
-	}*/
+	bIsInCombo = true;
+	FTimerHandle Handle;
+	GetWorld()->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([this] { bIsInCombo = false; }), ComboWindow, false);
 }

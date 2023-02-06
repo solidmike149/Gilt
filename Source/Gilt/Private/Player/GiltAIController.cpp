@@ -11,7 +11,6 @@ AGiltAIController::AGiltAIController(const FObjectInitializer& ObjectInitializer
 	: Super(ObjectInitializer)
 {
 	bWantsPlayerState = true;
-	bStopAILogicOnUnposses = false;
 }
 
 void AGiltAIController::OnUnPossess()
@@ -28,7 +27,7 @@ void AGiltAIController::OnUnPossess()
 			}
 		}
 	}
-	*/
 	
 	Super::OnUnPossess();
+	*/
 }

@@ -4,12 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "GameplayTagContainer.h"
+#include "GiltAIAbilitiesTypes.h"
 #include "Components/ActorComponent.h"
 #include "GiltAIAbilitiesComponent.generated.h"
 
 class UGiltAIAbilitiesData;
 
-UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, DisplayName="AI Abilities Component"))
+UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, DisplayName="AI Abilities Component"))
 class GILT_API UGiltAIAbilitiesComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -18,21 +19,27 @@ public:
 	
 	UGiltAIAbilitiesComponent();
 
-	UFUNCTION(BlueprintCallable)
-	bool EvaluateAndSelectAbility(float Distance, FGameplayTag& AbilityTag);
+	virtual void BeginPlay() override;
 
 	UFUNCTION(BlueprintCallable)
-	void NotifyAbilityExecution(FGameplayTag AbilityTag);
+	bool EvaluateAndSelectAbility(float Distance, FGameplayTag& OutAbilityTag);
 
-	//TODO Set AbilitiesDataClass Function
+	UFUNCTION(BlueprintCallable)
+	void NotifyAbilityExecution(FGameplayTag AbilityTag, float Distance);
+
+	//TODO Set AbilitiesData Function
 
 protected:
-	
-	TSubclassOf<UGiltAIAbilitiesData> AbilitiesDataClass;
 
-	UPROPERTY(Transient)
+	UPROPERTY(EditDefaultsOnly)
 	UGiltAIAbilitiesData* AbilitiesData;
 
-	UPROPERTY(BlueprintReadWrite, Category = "Attacks")
+	UPROPERTY(Transient)
+	TMap<FGameplayTag, FAbility> Abilities;
+
+	UPROPERTY(Transient)
+	float ComboWindow;
+
+	UPROPERTY(BlueprintReadWrite)
 	bool bIsInCombo;
 };

@@ -3,11 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameplayTagContainer.h"
 #include "GameFramework/Actor.h"
 #include "TiShield.generated.h"
 
-class UTiTraceComponent;
 class UBoxComponent;
 UCLASS()
 class GILT_API ATiShield : public AActor
@@ -30,15 +28,6 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UBoxComponent* WeakPoint;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UTiTraceComponent* TraceComponent;
-
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
 	void ChangeStatus(bool IsVulnerable);
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void ActivateTrace(FGameplayTag EventTag);
-
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
-	void DeactivateTrace();
 };

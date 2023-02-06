@@ -93,7 +93,7 @@ class GILT_API UGiltTabListWidgetBase : public UCommonTabListWidgetBase
 
     /** Delegate broadcast when a new tab is created. Allows hook ups after creation. */
     DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnTabContentCreated, FName, TabId, UCommonUserWidget*, TabWidget);
-    DECLARE_EVENT_TwoParams(ULyraTabListWidgetBase, FOnTabContentCreatedNative, FName /* TabId */, UCommonUserWidget* /* TabWidget */);
+    DECLARE_EVENT_TwoParams(UGiltTabListWidgetBase, FOnTabContentCreatedNative, FName /* TabId */, UCommonUserWidget* /* TabWidget */);
 
     /** Broadcasts when a new tab is created. */
     UPROPERTY(BlueprintAssignable, Category = "Tab List")
