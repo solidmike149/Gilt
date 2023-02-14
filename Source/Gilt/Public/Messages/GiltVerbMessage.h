@@ -35,5 +35,5 @@ struct FGiltVerbMessage
 	double Magnitude = 1.0;
 
 	// Returns a debug string representation of this message
-	//PROJECTTITAN_API FString ToString() const;
+	GILT_API FString ToString() const;
 };

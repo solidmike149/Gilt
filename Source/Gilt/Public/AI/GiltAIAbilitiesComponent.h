@@ -19,7 +19,12 @@ public:
 	
 	UGiltAIAbilitiesComponent();
 
+	UFUNCTION(BlueprintPure, Category = "Gilt|AI")
+	static UGiltAIAbilitiesComponent* FindAIAbilitiesComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UGiltAIAbilitiesComponent>() : nullptr); }
+
 	virtual void BeginPlay() override;
+
+	void SetAbilitiesData(UGiltAIAbilitiesData* NewAbilitiesData);
 
 	UFUNCTION(BlueprintCallable)
 	bool EvaluateAndSelectAbility(float Distance, FGameplayTag& OutAbilityTag);
@@ -27,7 +32,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void NotifyAbilityExecution(FGameplayTag AbilityTag, float Distance);
 
-	//TODO Set AbilitiesData Function
+	UFUNCTION(BlueprintCallable)
+	void DebugAbilityScores();
 
 protected:
 

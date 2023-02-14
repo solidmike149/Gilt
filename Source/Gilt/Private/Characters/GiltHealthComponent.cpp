@@ -8,6 +8,13 @@
 #include "GiltLogChannels.h"
 #include "AbilitySystem/GiltAbilitySystemComponent.h"
 #include "AbilitySystem/AttributeSets/GiltBasicSet.h"
+#include "GameFramework/GameplayMessageSubsystem.h"
+#include "Messages/GiltVerbMessage.h"
+#include "Net/UnrealNetwork.h"
+
+#include UE_INLINE_GENERATED_CPP_BY_NAME(GiltHealthComponent)
+
+UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Gilt_Elimination_Message, "Gilt.Elimination.Message");
 
 
 UGiltHealthComponent::UGiltHealthComponent(const FObjectInitializer& ObjectInitializer)
@@ -19,6 +26,13 @@ UGiltHealthComponent::UGiltHealthComponent(const FObjectInitializer& ObjectIniti
 	AbilitySystemComponent = nullptr;
 	HealthSet = nullptr;
 	DeathState = EGiltDeathState::NotDead;
+}
+
+void UGiltHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UGiltHealthComponent, DeathState);
 }
 
 void UGiltHealthComponent::OnUnregister()
@@ -62,7 +76,6 @@ void UGiltHealthComponent::InitializeWithAbilitySystem(UGiltAbilitySystemCompone
 
 	OnHealthChanged.Broadcast(this, HealthSet->GetHealth(), HealthSet->GetHealth(), nullptr);
 	OnMaxHealthChanged.Broadcast(this, HealthSet->GetHealth(), HealthSet->GetHealth(), nullptr);
-	
 }
 
 void UGiltHealthComponent::UninitializeFromAbilitySystem()
@@ -140,7 +153,69 @@ void UGiltHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* D
 			FScopedPredictionWindow NewScopedWindow(AbilitySystemComponent, true);
 			AbilitySystemComponent->HandleGameplayEvent(Payload.EventTag, &Payload);
 		}
+
+		// Send a standardized verb message that other systems can observe
+		/*
+		{
+			FGiltVerbMessage Message;
+			Message.Verb = TAG_Gilt_Elimination_Message;
+			Message.Instigator = DamageInstigator;
+			Message.InstigatorTags = *DamageEffectSpec.CapturedSourceTags.GetAggregatedTags();
+			Message.Target = UGiltVerbMessageHelpers::GetPlayerStateFromObject(AbilitySystemComponent->GetAvatarActor());
+			Message.TargetTags = *DamageEffectSpec.CapturedTargetTags.GetAggregatedTags();
+			//@TODO: Fill out context tags, and any non-ability-system source/instigator tags
+			//@TODO: Determine if it's an opposing team kill, self-own, team kill, etc...
+
+			UGameplayMessageSubsystem& MessageSystem = UGameplayMessageSubsystem::Get(GetWorld());
+			MessageSystem.BroadcastMessage(Message.Verb, Message);
+		}
+		*/
 	}
+}
+
+void UGiltHealthComponent::OnRep_DeathState(EGiltDeathState OldDeathState)
+{
+	const EGiltDeathState NewDeathState = DeathState;
+
+	// Revert the death state for now since we rely on StartDeath and FinishDeath to change it.
+	DeathState = OldDeathState;
+
+	if (OldDeathState > NewDeathState)
+	{
+		// The server is trying to set us back but we've already predicted past the server state.
+		UE_LOG(LogGilt, Warning, TEXT("GiltHealthComponent: Predicted past server death state [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
+		return;
+	}
+
+	if (OldDeathState == EGiltDeathState::NotDead)
+	{
+		if (NewDeathState == EGiltDeathState::DeathStarted)
+		{
+			StartDeath();
+		}
+		else if (NewDeathState == EGiltDeathState::DeathFinished)
+		{
+			StartDeath();
+			FinishDeath();
+		}
+		else
+		{
+			UE_LOG(LogGilt, Error, TEXT("GiltHealthComponent: Invalid death transition [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
+		}
+	}
+	else if (OldDeathState == EGiltDeathState::DeathStarted)
+	{
+		if (NewDeathState == EGiltDeathState::DeathFinished)
+		{
+			FinishDeath();
+		}
+		else
+		{
+			UE_LOG(LogGilt, Error, TEXT("GiltHealthComponent: Invalid death transition [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
+		}
+	}
+
+	ensureMsgf((DeathState == NewDeathState), TEXT("GiltHealthComponent: Death transition failed [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
 }
 
 void UGiltHealthComponent::StartDeath()

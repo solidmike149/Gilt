@@ -100,6 +100,9 @@ protected:
 	virtual void HandleHealthChanged(const FOnAttributeChangeData& ChangeData);
 	virtual void HandleMaxHealthChanged(const FOnAttributeChangeData& ChangeData);
 	virtual void HandleOutOfHealth(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
+
+	UFUNCTION()
+	virtual void OnRep_DeathState(EGiltDeathState OldDeathState);
 	
 	// Ability system used by this component.
 	UPROPERTY()
@@ -108,8 +111,7 @@ protected:
 	// Health set used by this component.
 	UPROPERTY()
 	const UGiltBasicSet* HealthSet;
-
-	// Replicated state used to handle dying.
-	UPROPERTY()
+	
+	UPROPERTY(ReplicatedUsing = OnRep_DeathState)
 	EGiltDeathState DeathState;
 };

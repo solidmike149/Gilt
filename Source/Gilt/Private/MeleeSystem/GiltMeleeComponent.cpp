@@ -11,7 +11,7 @@
 
 UGiltMeleeComponent::UGiltMeleeComponent()
 {
-	TracePeriod = 0.5f;
+	TracePeriod = 0.1f;
 
 	bDebug = false;
 	DebugDuration = 0.5;
@@ -24,8 +24,10 @@ void UGiltMeleeComponent::SetupComponent(UPrimitiveComponent* InPrimitiveCompone
 	{
 		OriginComponent = InPrimitiveComponent;
 	}
-	
-	UE_LOG(LogGilt, Error, TEXT("GiltMeleeComponent::SetupComponent: Invalid primitive component"));
+	else
+	{
+		UE_LOG(LogGilt, Error, TEXT("GiltMeleeComponent::SetupComponent: Invalid primitive component"));
+	}
 }
 
 void UGiltMeleeComponent::RegisterHitboxes(TArray<FName> NewHitboxNames)
@@ -67,7 +69,7 @@ void UGiltMeleeComponent::PerformMelee()
 	}
 }
 
-void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHitResult> HitResults)
+void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox, TArray<FHitResult>& HitResults)
 {
 	FName SocketName = HitBox->SocketName;
 
@@ -84,7 +86,7 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHi
 	FCollisionShape Shape;
 	
 	FVector EndLocation;
-	FVector DebugCenterLocation;
+
 	
 	switch (HitBox->Shape)
 	{
@@ -93,7 +95,7 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHi
 		EndLocation = StartLocation + (Rotation.Vector() * HitBox->BoxExtent.X);
 		if (bDebug)
 		{
-			DebugCenterLocation = StartLocation + (Rotation.Vector() * HitBox->BoxExtent.X / 2);
+			FVector DebugCenterLocation = StartLocation + (Rotation.Vector() * HitBox->BoxExtent.X / 2);
 			DrawDebugBox(World, DebugCenterLocation, HitBox->BoxExtent, Rotation, DebugTraceColor, false, DebugDuration);
 		}
 		break;
@@ -111,7 +113,6 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHi
 		if (bDebug)
 		{
 			EndLocation = StartLocation + (Rotation.Vector() * HitBox->CapsuleHalfHeight);
-			DebugCenterLocation = StartLocation + (Rotation.Vector() * HitBox->CapsuleHalfHeight / 2);
 			DrawDebugCapsule(World, StartLocation, HitBox->CapsuleHalfHeight, HitBox->CapsuleRadius, Rotation, DebugTraceColor, false, DebugDuration);
 		}
 		break;
@@ -128,7 +129,7 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHi
 
 void UGiltMeleeComponent::SendMeleeHitEvent(const FHitResult& HitResult, AActor* ActorHit)
 {
-	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(ActorHit);
+	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	if (AbilitySystemComponent != nullptr && IsValidChecked(AbilitySystemComponent))
 	{
 		FScopedPredictionWindow NewScopedWindow(AbilitySystemComponent, true);

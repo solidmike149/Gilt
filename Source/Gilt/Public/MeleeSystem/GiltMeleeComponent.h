@@ -71,13 +71,13 @@ private:
 
 	void PerformMelee();
 
-	void SweepMultiMelee(FMeleeCollisionData* HitBox,TArray<FHitResult> HitResults);
+	void SweepMultiMelee(FMeleeCollisionData* HitBox, TArray<FHitResult>& HitResults);
 
 	void SendMeleeHitEvent(const FHitResult& HitResult, AActor* ActorHit);
 
 protected:
 
-	UPROPERTY(EditAnywhere, meta = (RowType = "/Script/Gilt.MeleeCollisionData"))
+	UPROPERTY(EditAnywhere, Category = "Melee", meta = (RowType = "/Script/Gilt.MeleeCollisionData"))
 	UDataTable* HitboxesData;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")

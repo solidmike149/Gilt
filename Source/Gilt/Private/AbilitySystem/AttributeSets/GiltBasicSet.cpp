@@ -4,6 +4,7 @@
 #include "AbilitySystem/AttributeSets/GiltBasicSet.h"
 
 #include "GameplayEffectExtension.h"
+#include "GiltLogChannels.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "Messages/GiltVerbMessage.h"
 
@@ -50,7 +51,6 @@ void UGiltBasicSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackDa
 				const FGameplayEffectContextHandle& EffectContext = Data.EffectSpec.GetEffectContext();
 				AActor* Instigator = EffectContext.GetOriginalInstigator();
 				AActor* Causer = EffectContext.GetEffectCauser();
-
 				OnOutOfHealth.Broadcast(Instigator, Causer, Data.EffectSpec, Data.EvaluatedData.Magnitude);
 			}
 		}

@@ -76,7 +76,7 @@ struct GILT_API FAbility
 
 	bool IsInThreshold() const
 	{
-		if (Score <= ScoreThreshold)
+		if (Score >= ScoreThreshold)
 		{
 			return true;
 		}

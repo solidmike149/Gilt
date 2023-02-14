@@ -3,6 +3,7 @@
 
 #include "AI/GiltAIAbilitiesComponent.h"
 
+#include "GiltLogChannels.h"
 #include "AI/GiltAIAbilitiesData.h"
 
 
@@ -19,6 +20,14 @@ void UGiltAIAbilitiesComponent::BeginPlay()
 
 	ComboWindow = AbilitiesData->ComboWindow;
 }
+
+void UGiltAIAbilitiesComponent::SetAbilitiesData(UGiltAIAbilitiesData* NewAbilitiesData)
+{
+	Abilities = NewAbilitiesData->Abilities;
+
+	ComboWindow = NewAbilitiesData->ComboWindow;
+}
+
 
 bool UGiltAIAbilitiesComponent::EvaluateAndSelectAbility(float Distance, FGameplayTag& OutAbilityTag)
 {
@@ -57,10 +66,21 @@ void UGiltAIAbilitiesComponent::NotifyAbilityExecution(FGameplayTag AbilityTag, 
 	{
 		FGameplayTag AbilityToModify;
 		float ModifyingScore = ScoreChange.Get<FPostExecutionChange>().GetScore(AbilityToModify, Distance);
+
+		//LogOnScreen(this, FString::Printf(TEXT("Modify : %f"), ModifyingScore));
 		Abilities.Find(AbilityToModify)->SetScore(ModifyingScore);
 	}
 
 	bIsInCombo = true;
 	FTimerHandle Handle;
 	GetWorld()->GetTimerManager().SetTimer(Handle, FTimerDelegate::CreateLambda([this] { bIsInCombo = false; }), ComboWindow, false);
+}
+
+void UGiltAIAbilitiesComponent::DebugAbilityScores()
+{
+	for (TTuple<FGameplayTag, FAbility> Ability : Abilities)
+	{
+		FString Score = FString::Printf(TEXT(" : %f"),Ability.Value.Score);
+		LogOnScreen(this, Ability.Key.ToString() + Score, FColor::Green, GetWorld()->GetDeltaSeconds());
+	}
 }
