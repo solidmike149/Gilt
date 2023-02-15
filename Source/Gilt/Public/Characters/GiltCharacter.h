@@ -63,18 +63,6 @@ protected:
 
 	void InitializeGameplayTags();
 
-	// Begins the death sequence for the character (disables collision, disables movement, etc...)
-	UFUNCTION()
-	virtual void OnDeathStarted(AActor* OwningActor);
-
-	// Ends the death sequence for the character (detaches controller, destroys pawn, etc...)
-	UFUNCTION()
-	virtual void OnDeathFinished(AActor* OwningActor);
-
-	void DisableMovementAndCollision();
-	void DestroyDueToDeath();
-	void UninitAndDestroy();
-
 	virtual void OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode) override;
 	void SetMovementModeTag(EMovementMode MovementMode, uint8 CustomMovementMode, bool bTagEnabled);
 

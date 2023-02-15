@@ -61,20 +61,7 @@ public:
 	/** Returns the current maximum health value. */
 	UFUNCTION(BlueprintCallable, Category = "Health")
 	float GetMaxHealth() const;
-
-	UFUNCTION(BlueprintCallable, Category = "Health")
-	EGiltDeathState GetDeathState() const { return DeathState; }
-
-	UFUNCTION(BlueprintCallable, BlueprintPure = false, Category = "Health", Meta = (ExpandBoolAsExecs = "ReturnValue"))
-	bool IsDeadOrDying() const { return (DeathState > EGiltDeathState::NotDead); }
-
-	/** Begins the death sequence for the owner. */
-	virtual void StartDeath();
-
-	/** Ends the death sequence for the owner. */
-	virtual void FinishDeath();
 	
-
 	/** Delegate fired when the health value has changed. */
 	UPROPERTY(BlueprintAssignable)
 	FGiltHealth_AttributeChanged OnHealthChanged;
@@ -82,14 +69,6 @@ public:
 	/** Delegate fired when the max health value has changed. */
 	UPROPERTY(BlueprintAssignable)
 	FGiltHealth_AttributeChanged OnMaxHealthChanged;
-
-	/** Delegate fired when the death sequence has started. */
-	UPROPERTY(BlueprintAssignable)
-	FGiltHealth_DeathEvent OnDeathStarted;
-
-	/** Delegate fired when the death sequence has finished. */
-	UPROPERTY(BlueprintAssignable)
-	FGiltHealth_DeathEvent OnDeathFinished;
 
 protected:
 
@@ -100,9 +79,6 @@ protected:
 	virtual void HandleHealthChanged(const FOnAttributeChangeData& ChangeData);
 	virtual void HandleMaxHealthChanged(const FOnAttributeChangeData& ChangeData);
 	virtual void HandleOutOfHealth(AActor* DamageInstigator, AActor* DamageCauser, const FGameplayEffectSpec& DamageEffectSpec, float DamageMagnitude);
-
-	UFUNCTION()
-	virtual void OnRep_DeathState(EGiltDeathState OldDeathState);
 	
 	// Ability system used by this component.
 	UPROPERTY()
@@ -112,6 +88,4 @@ protected:
 	UPROPERTY()
 	const UGiltBasicSet* HealthSet;
 	
-	UPROPERTY(ReplicatedUsing = OnRep_DeathState)
-	EGiltDeathState DeathState;
 };

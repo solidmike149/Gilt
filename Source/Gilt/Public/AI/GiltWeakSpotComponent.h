@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbilityTypes.h"
-#include "Components/SceneComponent.h"
+#include "Components/BoxComponent.h"
 #include "GameplayTagContainer.h"
 
 #include "GiltWeakSpotComponent.generated.h"
@@ -16,15 +16,15 @@ class UBoxComponent;
 
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent, DisplayName="WeakSpot Component"))
-class GILT_API UGiltWeakSpotComponent : public USceneComponent
+class GILT_API UGiltWeakSpotComponent : public UBoxComponent
 {
 	GENERATED_BODY()
 
 public:
 
-	virtual void BeginPlay() override;
+	UGiltWeakSpotComponent();
 
-	void GameplayEventCallback(const FGameplayEventData* Payload);
+	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintAssignable)
 	FOnStatusChagedDelegate OnStatusChanged;
@@ -34,9 +34,8 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	UBoxComponent* BoxCollision;
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	FGameplayTag EventTag;
+
+	void GameplayEventCallback(const FGameplayEventData* Payload);
 };

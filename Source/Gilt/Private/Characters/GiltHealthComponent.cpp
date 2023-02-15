@@ -10,9 +10,6 @@
 #include "AbilitySystem/AttributeSets/GiltBasicSet.h"
 #include "GameFramework/GameplayMessageSubsystem.h"
 #include "Messages/GiltVerbMessage.h"
-#include "Net/UnrealNetwork.h"
-
-#include UE_INLINE_GENERATED_CPP_BY_NAME(GiltHealthComponent)
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_Gilt_Elimination_Message, "Gilt.Elimination.Message");
 
@@ -25,14 +22,6 @@ UGiltHealthComponent::UGiltHealthComponent(const FObjectInitializer& ObjectIniti
 
 	AbilitySystemComponent = nullptr;
 	HealthSet = nullptr;
-	DeathState = EGiltDeathState::NotDead;
-}
-
-void UGiltHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(UGiltHealthComponent, DeathState);
 }
 
 void UGiltHealthComponent::OnUnregister()
@@ -172,93 +161,3 @@ void UGiltHealthComponent::HandleOutOfHealth(AActor* DamageInstigator, AActor* D
 		*/
 	}
 }
-
-void UGiltHealthComponent::OnRep_DeathState(EGiltDeathState OldDeathState)
-{
-	const EGiltDeathState NewDeathState = DeathState;
-
-	// Revert the death state for now since we rely on StartDeath and FinishDeath to change it.
-	DeathState = OldDeathState;
-
-	if (OldDeathState > NewDeathState)
-	{
-		// The server is trying to set us back but we've already predicted past the server state.
-		UE_LOG(LogGilt, Warning, TEXT("GiltHealthComponent: Predicted past server death state [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
-		return;
-	}
-
-	if (OldDeathState == EGiltDeathState::NotDead)
-	{
-		if (NewDeathState == EGiltDeathState::DeathStarted)
-		{
-			StartDeath();
-		}
-		else if (NewDeathState == EGiltDeathState::DeathFinished)
-		{
-			StartDeath();
-			FinishDeath();
-		}
-		else
-		{
-			UE_LOG(LogGilt, Error, TEXT("GiltHealthComponent: Invalid death transition [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
-		}
-	}
-	else if (OldDeathState == EGiltDeathState::DeathStarted)
-	{
-		if (NewDeathState == EGiltDeathState::DeathFinished)
-		{
-			FinishDeath();
-		}
-		else
-		{
-			UE_LOG(LogGilt, Error, TEXT("GiltHealthComponent: Invalid death transition [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
-		}
-	}
-
-	ensureMsgf((DeathState == NewDeathState), TEXT("GiltHealthComponent: Death transition failed [%d] -> [%d] for owner [%s]."), (uint8)OldDeathState, (uint8)NewDeathState, *GetNameSafe(GetOwner()));
-}
-
-void UGiltHealthComponent::StartDeath()
-{
-	if (DeathState != EGiltDeathState::NotDead)
-	{
-		return;
-	}
-
-	DeathState = EGiltDeathState::DeathStarted;
-
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->SetLooseGameplayTagCount(FGiltGameplayTags::Get().Status_Death_Dying, 1);
-	}
-
-	AActor* Owner = GetOwner();
-	check(Owner);
-
-	OnDeathStarted.Broadcast(Owner);
-
-	Owner->ForceNetUpdate();
-}
-
-void UGiltHealthComponent::FinishDeath()
-{
-	if (DeathState != EGiltDeathState::DeathStarted)
-	{
-		return;
-	}
-
-	DeathState = EGiltDeathState::DeathFinished;
-
-	if (AbilitySystemComponent)
-	{
-		AbilitySystemComponent->SetLooseGameplayTagCount(FGiltGameplayTags::Get().Status_Death_Dead, 1);
-	}
-
-	AActor* Owner = GetOwner();
-	check(Owner);
-
-	OnDeathFinished.Broadcast(Owner);
-
-	Owner->ForceNetUpdate();
-}
-

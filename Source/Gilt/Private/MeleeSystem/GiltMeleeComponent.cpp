@@ -121,10 +121,8 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox, TArray<FH
 		UE_LOG(LogTemp, Warning, TEXT("Case Undefined"))
 		break;
 	}
-
-	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
-	World->SweepMultiByObjectType(HitResults , StartLocation, EndLocation, Rotation, ObjectQueryParams, Shape);
+	
+	World->SweepMultiByChannel(HitResults , StartLocation, EndLocation, Rotation, CollisionChannel, Shape);
 }
 
 void UGiltMeleeComponent::SendMeleeHitEvent(const FHitResult& HitResult, AActor* ActorHit)

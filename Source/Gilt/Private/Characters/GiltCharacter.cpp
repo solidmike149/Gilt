@@ -41,9 +41,6 @@ void AGiltCharacter::PostInitializeComponents()
 {
 	Super::PostInitializeComponents();
 	
-	HealthComponent->OnDeathStarted.AddDynamic(this, &ThisClass::OnDeathStarted);
-    HealthComponent->OnDeathFinished.AddDynamic(this, &ThisClass::OnDeathFinished);
-
 	PawnExtComponent->CheckPawnReadyToInitialize();
 }
 
@@ -160,48 +157,6 @@ float AGiltCharacter::GetMoveSpeed()
 	return 0;
 }
 
-
-void AGiltCharacter::OnDeathStarted(AActor*)
-{
-	DisableMovementAndCollision();
-}
-
-void AGiltCharacter::DisableMovementAndCollision()
-{
-	if (Controller)
-	{
-		Controller->SetIgnoreMoveInput(true);
-	}
-
-	UCapsuleComponent* CapsuleComp = GetCapsuleComponent();
-	check(CapsuleComp);
-	CapsuleComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	CapsuleComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-
-	UCharacterMovementComponent* MoveComp = GetCharacterMovement();
-	MoveComp->StopMovementImmediately();
-	MoveComp->DisableMovement();
-}
-
-void AGiltCharacter::OnDeathFinished(AActor*)
-{
-	GetWorld()->GetTimerManager().SetTimerForNextTick(this, &ThisClass::DestroyDueToDeath);
-}
-
-
-void AGiltCharacter::DestroyDueToDeath()
-{
-	UninitAndDestroy();
-}
-
-void AGiltCharacter::UninitAndDestroy()
-{
-
-	DetachFromControllerPendingDestroy();
-	SetLifeSpan(0.1f);
-	
-	//SetActorHiddenInGame(true);
-}
 
 void AGiltCharacter::OnMovementModeChanged(EMovementMode PrevMovementMode, uint8 PreviousCustomMode)
 {

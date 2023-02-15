@@ -6,6 +6,11 @@
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
 
+UGiltWeakSpotComponent::UGiltWeakSpotComponent()
+{
+	bIsOpen = false;
+}
+
 void UGiltWeakSpotComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -19,5 +24,15 @@ void UGiltWeakSpotComponent::GameplayEventCallback(const FGameplayEventData* Pay
 {
 	FGameplayEventData TempPayload = *Payload;
 	TempPayload.EventTag = EventTag;
+	if (!bIsOpen)
+	{
+		SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+		bIsOpen = true;
+	}
+	else
+	{
+		SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		bIsOpen = false;
+	}
 	OnStatusChanged.Broadcast(bIsOpen, MoveTemp(TempPayload));
 }

@@ -93,7 +93,7 @@ public:
 	void OnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const
 	{
 		NativeOnAbilityFailedToActivate(FailedReason);
-		ScriptOnAbilityFailedToActivate(FailedReason);
+		K2_OnAbilityFailedToActivate(FailedReason);
 	}
 
 protected:
@@ -102,8 +102,8 @@ protected:
 	virtual void NativeOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const;
 
 	// Called when the ability fails to activate
-	UFUNCTION(BlueprintImplementableEvent)
-	void ScriptOnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const;
+	UFUNCTION(BlueprintImplementableEvent ,meta=(DisplayName="OnAbilityFailedToActivate"))
+	void K2_OnAbilityFailedToActivate(const FGameplayTagContainer& FailedReason) const;
 
 	//~UGameplayAbility interface
 	virtual bool CanActivateAbility(const FGameplayAbilitySpecHandle Handle, const FGameplayAbilityActorInfo* ActorInfo, const FGameplayTagContainer* SourceTags, const FGameplayTagContainer* TargetTags, FGameplayTagContainer* OptionalRelevantTags) const override;
