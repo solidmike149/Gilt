@@ -36,7 +36,7 @@ private:
 	static UAbilityTask_RotateToFace* RotateToFace(
 													UGameplayAbility* OwningAbility,
 													FName TaskInstanceName,
-													AActor* ActorToFace,
+													USceneComponent* ComponentToFace,
 													FRotator TargetRotation,
 													float Duration,
 													float InterpolationSpeed,
@@ -46,7 +46,7 @@ private:
 	void Rotate(float DeltaTime);
 
 	UPROPERTY()
-	AActor* ActorToFace;
+	USceneComponent* ComponentToFace;
 	
 	FRotator TargetRotation;
 

@@ -8,7 +8,7 @@
 UAbilityTask_RotateToFace::UAbilityTask_RotateToFace()
 {
 	bTickingTask = true;
-	ActorToFace = nullptr;
+	ComponentToFace = nullptr;
 	OptionalInterpolationCurve = nullptr;
 	Time = 0.0f;
 }
@@ -22,7 +22,7 @@ UAbilityTask_RotateToFace* UAbilityTask_RotateToFace::RotateToFace
 (
 	UGameplayAbility* OwningAbility,
 	FName TaskInstanceName,
-	AActor* ActorToFace,
+	USceneComponent* ComponentToFace,
 	FRotator TargetRotation,
 	float Duration,
 	float InterpolationSpeed,
@@ -34,7 +34,7 @@ UAbilityTask_RotateToFace* UAbilityTask_RotateToFace::RotateToFace
 	UAbilityTask_RotateToFace* MyTask = NewAbilityTask<UAbilityTask_RotateToFace>(OwningAbility, TaskInstanceName);
 	
 	MyTask->Duration = Duration;
-	MyTask->ActorToFace = ActorToFace;
+	MyTask->ComponentToFace = ComponentToFace;
 	MyTask->TargetRotation = TargetRotation;
 	MyTask->InterpolationSpeed = InterpolationSpeed,
 	MyTask->OptionalInterpolationCurve = OptionalInterpolationCurve;
@@ -86,9 +86,9 @@ void UAbilityTask_RotateToFace::Rotate(float DeltaTime)
 
 	AActor* Avatar = GetAvatarActor();
 	
-	if(ActorToFace)
+	if(ComponentToFace)
 	{
-		InterpRotation = FRotationMatrix::MakeFromX(ActorToFace->GetActorLocation() - Avatar->GetActorLocation()).Rotator();
+		InterpRotation = FRotationMatrix::MakeFromX(ComponentToFace->GetComponentLocation() - Avatar->GetActorLocation()).Rotator();
 
 		if(OptionalInterpolationCurve)
 		{

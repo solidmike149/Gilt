@@ -36,6 +36,5 @@ float UGiltCharacterMovementComponent::GetMaxSpeed() const
 			return 0;
 		}
 	}
-
 	return Super::GetMaxSpeed();
 }

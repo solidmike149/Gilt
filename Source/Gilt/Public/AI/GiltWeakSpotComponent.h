@@ -24,6 +24,9 @@ public:
 
 	UGiltWeakSpotComponent();
 
+	UFUNCTION(BlueprintPure, Category = "Gilt|AI")
+	static UGiltWeakSpotComponent* FindWeakSpotComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UGiltWeakSpotComponent>() : nullptr); }
+
 	virtual void BeginPlay() override;
 
 	UPROPERTY(BlueprintAssignable)
