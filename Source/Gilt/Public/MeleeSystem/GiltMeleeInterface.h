@@ -22,10 +22,10 @@ class GILT_API IGiltMeleeInterface
 public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void RegisterHitboxes(const TArray<FName>& NewNames);
+	void RegisterHitboxes(const TArray<FName>& RegisteringIDs);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	void UnRegisterHitboxes(const TArray<FName>& NamesToRemove);
+	void UnRegisterHitboxes(const TArray<FName>& UnRegisteringIDs);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	UPrimitiveComponent* GetOriginComponent() const;
