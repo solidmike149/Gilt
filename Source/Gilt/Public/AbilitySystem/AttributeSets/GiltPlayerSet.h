@@ -18,6 +18,7 @@ public:
 	
 	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, Stamina);
 	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, MaxStamina);
+	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, StaminaRegen);
 	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, Ammo);
 	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, MaxAmmo);
 	ATTRIBUTE_ACCESSORS(UGiltPlayerSet, TargetingRange);
@@ -29,16 +30,16 @@ public:
 
 	UPROPERTY(BlueprintReadOnly, Category = "Gilt|Stamina")
 	FGameplayAttributeData Stamina;
-
-
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Gilt|Stamina")
 	FGameplayAttributeData MaxStamina;
 
-
+	UPROPERTY(BlueprintReadOnly, Category = "Gilt|Stamina")
+	FGameplayAttributeData StaminaRegen;
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Gilt|Ammo")
 	FGameplayAttributeData Ammo;
-
-
+	
 	UPROPERTY(BlueprintReadOnly, Category = "Gilt|Ammo")
 	FGameplayAttributeData MaxAmmo;
 

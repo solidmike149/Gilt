@@ -9,6 +9,7 @@ UGiltPlayerSet::UGiltPlayerSet()
 {
 	MaxStamina = 100;
 	Stamina = 100;
+	StaminaRegen = 2;
 	MaxAmmo = 3;
 	Ammo = 3;
 }

@@ -24,7 +24,7 @@ public:
 	float Range;
 
 	UPROPERTY(BlueprintReadWrite, Meta = (ExposeOnSpawn = true))
-	FGameplayEffectSpecHandle DamageEffectSpecHandle;
+	FGameplayEffectSpecHandle EffectSpecHandle;
 
 	UPROPERTY(BlueprintReadOnly, VisibleAnywhere)
 	UParticleSystemComponent* ParticleComp;

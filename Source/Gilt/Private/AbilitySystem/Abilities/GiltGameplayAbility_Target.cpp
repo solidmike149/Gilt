@@ -80,7 +80,7 @@ void UGiltGameplayAbility_Target::SetIndicator(AActor* TargetActor)
 		{
 			
 			IndicatorManager->RemoveIndicator(CurrentIndicator);
-			
+			//TODO Check Validity
 			UIndicatorDescriptor* Indicator = NewObject<UIndicatorDescriptor>();
 			Indicator->SetDataObject(TargetActor);
 			Indicator->SetSceneComponent(TargetActor->GetRootComponent());
