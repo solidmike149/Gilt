@@ -5,14 +5,12 @@
 
 #include "AbilitySystemComponent.h"
 #include "AbilitySystemGlobals.h"
+#include "AbilitySystem/AttributeSets/GiltBasicSet.h"
 
 
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_MovementStopped, "Gameplay.MovementStopped");
 UE_DEFINE_GAMEPLAY_TAG(TAG_Gameplay_RotationStopped, "Gameplay.RotationStopped");
 
-UGiltCharacterMovementComponent::UGiltCharacterMovementComponent()
-{
-}
 
 FRotator UGiltCharacterMovementComponent::GetDeltaRotation(float DeltaTime) const
 {
@@ -34,6 +32,12 @@ float UGiltCharacterMovementComponent::GetMaxSpeed() const
 		if (ASC->HasMatchingGameplayTag(TAG_Gameplay_MovementStopped))
 		{
 			return 0;
+		}
+
+		const float MaxSpeedFromAttribute = ASC->GetNumericAttribute(UGiltBasicSet::GetMovementSpeedAttribute());
+		if (MaxSpeedFromAttribute > 0.0f)
+		{
+			return MaxSpeedFromAttribute;
 		}
 	}
 	return Super::GetMaxSpeed();

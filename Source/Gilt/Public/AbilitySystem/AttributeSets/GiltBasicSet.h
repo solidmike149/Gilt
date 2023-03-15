@@ -30,7 +30,7 @@ public:
 
 	ATTRIBUTE_ACCESSORS(UGiltBasicSet, Health);
 	ATTRIBUTE_ACCESSORS(UGiltBasicSet, MaxHealth);
-	ATTRIBUTE_ACCESSORS(UGiltBasicSet, MoveSpeed);
+	ATTRIBUTE_ACCESSORS(UGiltBasicSet, MovementSpeed);
 
 	// Delegate to broadcast when the health attribute reaches zero.
 	mutable FGiltAttributeEvent OnOutOfHealth;
@@ -57,5 +57,5 @@ private:
 
 	// The current max health attribute.  Max health is an attribute since gameplay effects can modify it.
 	UPROPERTY(BlueprintReadOnly,  Category = "Gilt|Speed", Meta = (AllowPrivateAccess = true))
-	FGameplayAttributeData MoveSpeed;
+	FGameplayAttributeData MovementSpeed;
 };

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AttributeSet.h"
 #include "NativeGameplayTags.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GiltCharacterMovementComponent.generated.h"
@@ -21,8 +22,6 @@ class GILT_API UGiltCharacterMovementComponent : public UCharacterMovementCompon
 	GENERATED_BODY()
 
 public:
-
-	UGiltCharacterMovementComponent();
 	
 	//~UMovementComponent interface
 	virtual FRotator GetDeltaRotation(float DeltaTime) const override;
