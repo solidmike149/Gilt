@@ -73,7 +73,7 @@ private:
 
 	void SweepMultiMelee(FMeleeCollisionData* HitBox, TArray<FHitResult>& HitResults);
 
-	void SendMeleeHitEvent(const FHitResult& HitResult, AActor* ActorHit);
+	void SendMeleeHitEvents(const FHitResult& HitResult, AActor* ActorHit);
 
 protected:
 
@@ -82,6 +82,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Melee")
 	FGameplayTag HitEventTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Melee")
+	FGameplayTag HitFeedbackTag;
 
 	UPROPERTY(EditAnywhere, Category = "Melee")
 	float TracePeriod;

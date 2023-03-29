@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
+#include "UI/GiltActivatableWidget.h"
 #include "TiDialogWindow.generated.h"
 
 
@@ -12,7 +12,7 @@ class UDialogData;
  * 
  */
 UCLASS(Abstract)
-class GILT_API UTiDialogWindow : public UCommonActivatableWidget
+class GILT_API UTiDialogWindow : public UGiltActivatableWidget
 {
 	GENERATED_BODY()
 

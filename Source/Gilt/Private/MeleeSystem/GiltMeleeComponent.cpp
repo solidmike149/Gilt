@@ -63,7 +63,7 @@ void UGiltMeleeComponent::PerformMelee()
 			{
 				HitActors.Add(ActorHit);
 				
-				SendMeleeHitEvent(HitResult, ActorHit);
+				SendMeleeHitEvents(HitResult, ActorHit);
 			}
 		}
 	}
@@ -125,7 +125,7 @@ void UGiltMeleeComponent::SweepMultiMelee(FMeleeCollisionData* HitBox, TArray<FH
 	World->SweepMultiByChannel(HitResults , StartLocation, EndLocation, Rotation, CollisionChannel, Shape);
 }
 
-void UGiltMeleeComponent::SendMeleeHitEvent(const FHitResult& HitResult, AActor* ActorHit)
+void UGiltMeleeComponent::SendMeleeHitEvents(const FHitResult& HitResult, AActor* ActorHit)
 {
 	UAbilitySystemComponent* AbilitySystemComponent = UAbilitySystemGlobals::GetAbilitySystemComponentFromActor(GetOwner());
 	if (AbilitySystemComponent != nullptr && IsValidChecked(AbilitySystemComponent))
@@ -134,6 +134,7 @@ void UGiltMeleeComponent::SendMeleeHitEvent(const FHitResult& HitResult, AActor*
 		FGameplayEventData Payload;
 		Payload.Target = ActorHit;
 		AbilitySystemComponent->HandleGameplayEvent(HitEventTag, &Payload);
+		AbilitySystemComponent->HandleGameplayEvent(HitFeedbackTag, &Payload);
 	}
 }
 

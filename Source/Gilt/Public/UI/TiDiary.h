@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "CommonActivatableWidget.h"
+#include "GiltActivatableWidget.h"
 #include "TiDiary.generated.h"
 
 class UCommonListView;
@@ -13,7 +13,7 @@ class UButton;
  * 
  */
 UCLASS(Abstract)
-class GILT_API UTiDiary : public UCommonActivatableWidget
+class GILT_API UTiDiary : public UGiltActivatableWidget
 {
 	GENERATED_BODY()
 
