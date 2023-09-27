@@ -104,7 +104,7 @@ void AGiltGameMode::HandleMatchAssignmentIfNotExpectingOne()
 	if (!ExperienceId.IsValid())
 	{
 		//@TODO: Pull this from a config setting or something
-		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("GIltExperienceDefinition"), FName("B_DefaultExperience"));
+		ExperienceId = FPrimaryAssetId(FPrimaryAssetType("GiltExperienceDefinition"), FName("B_DefaultExperience"));
 		ExperienceIdSource = TEXT("Default");
 	}
 

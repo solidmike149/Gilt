@@ -54,7 +54,7 @@ public:
 
 	/** Returns the diary component if one exists on the specified actor. */
 	UFUNCTION(BlueprintPure, Category = "Health")
-	static UTiDiaryComponent* FindHealthComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UTiDiaryComponent>() : nullptr); }
+	static UTiDiaryComponent* FindDiaryComponent(const AActor* Actor) { return (Actor ? Actor->FindComponentByClass<UTiDiaryComponent>() : nullptr); }
 	
 	UFUNCTION(BlueprintCallable)
 	TArray<FString> GetUnlockedCategories() const;

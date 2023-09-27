@@ -5,6 +5,7 @@
 
 #include "UI/IndicatorSystem/GiltIndicatorManagerComponent.h"
 
+
 UIndicatorLibrary::UIndicatorLibrary()
 {
 }

@@ -48,5 +48,4 @@ public:
 	UPROPERTY(EditDefaultsOnly, Instanced, Category="Actions")
 	TArray<UGameFeatureAction*> Actions;
 
-
 };

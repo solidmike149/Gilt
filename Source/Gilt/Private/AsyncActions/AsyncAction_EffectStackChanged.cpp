@@ -57,7 +57,7 @@ void UAsyncAction_EffectStackChanged::OnRemoveGameplayEffectCallback(const FActi
 
 	FGameplayTagContainer GrantedTags;
 	EffectRemoved.Spec.GetAllGrantedTags(GrantedTags);
-
+	
 	if (AssetTags.HasTagExact(EffectGameplayTag) || GrantedTags.HasTagExact(EffectGameplayTag))
 	{
 		OnGameplayEffectStackChange.Broadcast(EffectGameplayTag, EffectRemoved.Handle, 0, 1);

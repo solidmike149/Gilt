@@ -72,7 +72,6 @@ void FGiltGameplayTags::AddCustomMovementModeTag(FGameplayTag& OutTag, const ANS
 	GameplayTags.CustomMovementModeTagMap.Add(CustomMovementMode, OutTag);
 }
 
-
 FGameplayTag FGiltGameplayTags::FindTagByString(FString TagString, bool bMatchPartialString)
 {
 	const UGameplayTagsManager& Manager = UGameplayTagsManager::Get();
@@ -96,4 +95,3 @@ FGameplayTag FGiltGameplayTags::FindTagByString(FString TagString, bool bMatchPa
 
 	return Tag;
 }
-

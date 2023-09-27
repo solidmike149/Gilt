@@ -8,7 +8,6 @@
 
 
 class UGiltIndicatorManagerComponent;
-class UGiltIndicatorDescriptor;
 
 struct FIndicatorProjection
 {
