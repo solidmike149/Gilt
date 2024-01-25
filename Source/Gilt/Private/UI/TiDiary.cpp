@@ -3,7 +3,7 @@
 
 #include "UI/TiDiary.h"
 
-#include "Diary/TiDiaryComponent.h"
+#include "..\..\Public\Diary\GiltDiaryComponent.h"
 
 void UTiDiary::OnIndexSelected_Implementation(FName IndexId)
 {

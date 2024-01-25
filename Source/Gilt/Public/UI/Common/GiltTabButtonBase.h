@@ -12,7 +12,7 @@ class UCommonLazyImage;
  * 
  */
 UCLASS(Abstract, Blueprintable, meta = (DisableNativeTick))
-class GILT_API UGiltTabButtonBase : public UGiltButtonBase, public ITiTabButtonInterface
+class GILT_API UGiltTabButtonBase : public UGiltButtonBase, public IGiltTabButtonInterface
 {
 	GENERATED_BODY()
 

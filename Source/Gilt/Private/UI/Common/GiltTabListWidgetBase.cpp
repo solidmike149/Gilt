@@ -112,11 +112,11 @@ void UGiltTabListWidgetBase::HandleTabCreation_Implementation(FName TabId, UComm
 		TabInfoPtr = PendingTabLabelInfoMap.Find(TabId);
 	}
 	
-	if (TabButton->GetClass()->ImplementsInterface(UTiTabButtonInterface::StaticClass()))
+	if (TabButton->GetClass()->ImplementsInterface(UGiltTabButtonInterface::StaticClass()))
 	{
 		if (ensureMsgf(TabInfoPtr, TEXT("A tab button was created with id %s but no label info was specified. RegisterDynamicTab should be used over RegisterTab to provide label info."), *TabId.ToString()))
 		{
-			ITiTabButtonInterface::Execute_SetTabLabelInfo(TabButton, *TabInfoPtr);
+			IGiltTabButtonInterface::Execute_SetTabLabelInfo(TabButton, *TabInfoPtr);
 		}
 	}
 

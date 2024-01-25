@@ -54,7 +54,7 @@ void UTiDescriptionPagesSwitcher::HandleNextTabAction()
 {
 	int32 Pages = WidgetSwitcher->GetNumWidgets();
 	
-	if(Pages > 1)
+	if (Pages > 1)
 	{
 		int32 NextIndex = WidgetSwitcher->GetActiveWidgetIndex() + 1;
 		
@@ -70,7 +70,7 @@ void UTiDescriptionPagesSwitcher::HandlePreviousTabAction()
 {
 	int32 Pages = WidgetSwitcher->GetNumWidgets();
 
-	if(Pages > 1)
+	if (Pages > 1)
 	{
 		int32 NextIndex = WidgetSwitcher->GetActiveWidgetIndex() - 1;
 		

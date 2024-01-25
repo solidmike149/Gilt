@@ -44,12 +44,12 @@ struct FGiltTabDescriptor
 };
 
 UINTERFACE(BlueprintType)
-class UTiTabButtonInterface : public UInterface
+class UGiltTabButtonInterface : public UInterface
 {
 	GENERATED_BODY()
 };
 
-class ITiTabButtonInterface
+class IGiltTabButtonInterface
 {
 	GENERATED_BODY()
 

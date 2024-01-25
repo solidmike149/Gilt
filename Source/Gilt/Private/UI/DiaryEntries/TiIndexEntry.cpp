@@ -22,8 +22,6 @@ void UTiIndexEntry::NativeOnListItemObjectSet(UObject* ListItemObject)
 	Id = Data.Id;
 
 	OnClicked.BindUFunction(Data.Parent.Get(), "OnIndexSelected");
-	
-	IndexText->SetText(Data.Title);
 }
 
 void UTiIndexEntry::OnButtonClicked()

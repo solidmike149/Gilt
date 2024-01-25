@@ -34,9 +34,6 @@ protected:
 	UPROPERTY(meta = (BindWidget))
 	UButton* MainButton;
 
-	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
-	UTextBlock* IndexText;
-
 	UPROPERTY(BlueprintReadWrite)
 	FName Id;
 
